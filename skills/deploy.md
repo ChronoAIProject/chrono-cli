@@ -184,13 +184,19 @@ Use `list_pipelines` to find existing pipeline for this repo+branch.
    - Goes in `frontendEnvVars`
 
    **Backend (non-sensitive config):**
-   - `PORT`, `LOG_LEVEL`, `NODE_ENV`, etc.
+   - ONLY these types: `PORT`, `LOG_LEVEL`, `NODE_ENV`, `HOST`, `DEBUG`
+   - Simple configuration that isn't sensitive
    - Goes in `backendEnvVars`
 
    **Secrets (sensitive data - stored securely):**
-   - `API_KEY`, `SECRET_KEY`, `JWT_SECRET`, `DATABASE_PASSWORD`, etc.
+   - **MUST go to secrets if name contains:** `KEY`, `SECRET`, `TOKEN`, `PASSWORD`, `CREDENTIAL`, `AUTH`, `PRIVATE`
+   - Pattern match examples: `*_API_KEY`, `*_SECRET`, `*_TOKEN`, `JWT_*`, `*_PASSWORD`
+   - Specific examples: `LLM_API_KEY`, `OPENAI_API_KEY`, `JWT_SECRET`, `DATABASE_PASSWORD`, `AUTH_TOKEN`
+   - **ALWAYS use `secrets` field for these, NEVER `backendEnvVars`**
    - Goes in `secrets` field
    - Stored encrypted, injected at runtime via K8s secrets
+
+   **⚠️ CRITICAL: When in doubt, put it in `secrets`. It's safer to over-protect than under-protect.**
 
 5. **Present detected configuration and ASK user to confirm:**
 
@@ -220,10 +226,12 @@ Use `list_pipelines` to find existing pipeline for this repo+branch.
    | PORT | 3000 |
    | LOG_LEVEL | info |
 
-   **Secrets:** (sensitive data, stored securely)
+   **Secrets:** (sensitive data, stored securely via K8s secrets)
+   ⚠️ Any variable with KEY, SECRET, TOKEN, PASSWORD, AUTH in the name goes here!
    | Secret | Value |
    |--------|-------|
-   | API_KEY | (please provide) |
+   | LLM_API_KEY | sk-xxx... |
+   | OPENAI_API_KEY | sk-xxx... |
    | JWT_SECRET | (please provide) |
    | DATABASE_PASSWORD | (please provide) |
 
@@ -257,10 +265,12 @@ Use `list_pipelines` to find existing pipeline for this repo+branch.
    - **name** and **appName**: Both use format {repo}-{branch-short}. Keep short and readable.
    - Detected settings from step 1
    - `frontendEnvVars`: public frontend variables (NEXT_PUBLIC_*, etc.)
-   - `backendEnvVars`: non-sensitive backend config (PORT, LOG_LEVEL, etc.)
-   - `secrets`: sensitive data (API_KEY, JWT_SECRET, passwords)
+   - `backendEnvVars`: **ONLY** non-sensitive config (PORT, LOG_LEVEL, NODE_ENV, HOST)
+   - `secrets`: **ALL variables containing KEY, SECRET, TOKEN, PASSWORD, AUTH** (e.g., LLM_API_KEY, JWT_SECRET, DATABASE_PASSWORD)
    - `middleware`: `["mongodb"]`, `["redis"]`, or `["mongodb", "redis"]`
    - Backend port if not 8080
+
+   **⚠️ IMPORTANT:** Double-check that no secrets ended up in `backendEnvVars`. Any *_KEY, *_SECRET, *_TOKEN MUST be in `secrets`.
 
 7. **Show the user the generated URLs** from the response:
    - Frontend URL: https://{appName}.chrono-ai.fun
