@@ -14,7 +14,9 @@ const (
 	configDir      = ".chrono"
 	configFile     = "config.yaml"
 	skillsDir      = "skills"
-	defaultBaseURL = "https://platform.aelf.dev/api/v1"
+	// defaultBaseURL is only used if no config exists and CHRONO_API_URL is not set
+	// Users should configure via CHRONO_API_URL env var or config file
+	defaultBaseURL = "" // Require explicit configuration
 )
 
 // Config represents the CLI configuration
@@ -215,8 +217,8 @@ func Default() *Config {
 		},
 		Skills: SkillsConfig{
 			InstallDir: filepath.Join(homeDir, configDir, skillsDir),
-			GitHubRepo: "aelfdevops/chrono-cli",     // Chrono CLI repository (contains skills/)
-			GitHubRef:  "main",                      // Default branch
+			GitHubRepo: "ChronoAIProject/chrono-cli", // Chrono CLI repository (contains skills/)
+			GitHubRef:  "main",                        // Default branch
 		},
 	}
 }

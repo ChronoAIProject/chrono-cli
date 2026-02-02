@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/aelfdevops/chrono/pkg/detector"
+	"github.com/ChronoAIProject/chrono-cli/pkg/detector"
 	"gopkg.in/yaml.v3"
 )
 

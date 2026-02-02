@@ -60,15 +60,15 @@ func runInit(cmd *cobra.Command, args []string) error {
 	fmt.Println("========================================")
 	fmt.Println()
 
-	// Determine API URL: flag > env var > default
+	// Determine API URL: flag > env var > prompt
 	apiURL := initAPIURL
 	if apiURL == "" {
 		apiURL = os.Getenv("CHRONO_API_URL")
 	}
 
 	if apiURL == "" {
-		// Default to production API
-		apiURL = "https://platform.aelf.dev/api/v1"
+		// Require explicit API URL configuration
+		return fmt.Errorf("API URL required. Set CHRONO_API_URL environment variable or use --api-url flag")
 	}
 
 	// Create .chrono directory

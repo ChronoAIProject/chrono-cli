@@ -1,7 +1,7 @@
 package main
 
 import (
-	cmd "github.com/aelfdevops/chrono/cmd"
+	cmd "github.com/ChronoAIProject/chrono-cli/cmd"
 )
 
 // Version information set by build flags (e.g., -ldflags "-X main.version=1.0.0")

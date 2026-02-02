@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/aelfdevops/chrono/pkg/api"
+	"github.com/ChronoAIProject/chrono-cli/pkg/api"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )

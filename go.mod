@@ -1,4 +1,4 @@
-module github.com/aelfdevops/chrono
+module github.com/ChronoAIProject/chrono-cli
 
 go 1.22
 

@@ -6,7 +6,7 @@ BUILD_TIME := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 COMMIT := $(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 
 # Build flags
-LDFLAGS := -ldflags "-X github.com/aelfdevops/chrono/cmd.Version=$(VERSION) -X github.com/aelfdevops/chrono/cmd.BuildTime=$(BUILD_TIME) -X github.com/aelfdevops/chrono/cmd.Commit=$(COMMIT) -s -w"
+LDFLAGS := -ldflags "-X github.com/ChronoAIProject/chrono-cli/cmd.Version=$(VERSION) -X github.com/ChronoAIProject/chrono-cli/cmd.BuildTime=$(BUILD_TIME) -X github.com/ChronoAIProject/chrono-cli/cmd.Commit=$(COMMIT) -s -w"
 
 # Binary name
 BINARY_NAME := chrono

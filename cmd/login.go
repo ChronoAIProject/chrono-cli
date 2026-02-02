@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/aelfdevops/chrono/pkg/api"
+	"github.com/ChronoAIProject/chrono-cli/pkg/api"
 	"github.com/spf13/cobra"
 )
 

@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/aelfdevops/chrono/pkg/config"
+	"github.com/ChronoAIProject/chrono-cli/pkg/config"
 )
 
 var cfgFile string
