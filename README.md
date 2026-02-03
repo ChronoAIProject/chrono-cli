@@ -83,11 +83,11 @@ This builds binaries for all platforms (darwin/linux/amd64/arm64).
 ## Usage
 
 ```bash
-# Login to the platform
-chrono login
-
 # Initialize project (copies skills to .chrono/skills/)
 chrono init
+
+# Login to the platform
+chrono login
 
 # Detect project type
 chrono detect

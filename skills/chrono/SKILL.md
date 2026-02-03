@@ -18,12 +18,12 @@ chrono --version
 # 2. If not installed, install via curl
 curl -sSL https://raw.githubusercontent.com/ChronoAIProject/chrono-cli/main/install.sh | sh
 
-# 3. Login to authenticate
-chrono login
-
-# 4. Navigate to your project and initialize
+# 3. Navigate to your project and initialize
 cd /path/to/project
 chrono init
+
+# 4. Login to authenticate
+chrono login
 
 # 5. Setup MCP integration with your AI editor
 chrono mcp-setup
@@ -108,9 +108,9 @@ This command:
 
 ### First-time setup for a new project:
 ```bash
-1. chrono login
-2. cd /path/to/project
-3. chrono init
+1. cd /path/to/project
+2. chrono init
+3. chrono login
 4. chrono detect --save
 5. chrono mcp-setup
 ```
