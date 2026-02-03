@@ -132,7 +132,7 @@ func installAllSkills(serverURL string) ([]string, error) {
 	skills := []string{
 		"chrono-setup",
 		"chrono-storage",
-		"chrono-check-setup",
+		"chrono-precheck",
 		"chrono-deploy",
 		"chrono-restart",
 	}
