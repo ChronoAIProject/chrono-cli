@@ -1,3 +1,8 @@
+---
+name: deploy
+description: Deploy current Git repository to the Developer Platform using MCP tools. Use when user asks to deploy, to deploy their project, or wants to push code to production. Covers pre-flight checks, GitHub OAuth, pipeline creation with environment variable detection, deployment triggering, and monitoring.
+---
+
 # Deploy Current Project
 
 Deploy the current Git repository using developer-platform MCP.
@@ -6,7 +11,7 @@ Deploy the current Git repository using developer-platform MCP.
 
 **IMPORTANT:** Before deploying, you MUST verify the project structure is correct.
 
-**First, read and follow the check-setup.md skill:**
+**First, follow the check-setup skill:**
 
 1. Read the check-setup skill to understand the verification steps
 2. Check if `backend/Dockerfile` exists (for backend/fullstack projects)
@@ -24,7 +29,7 @@ grep -q '"build"' package.json 2>/dev/null && echo "✓ Root has build script" |
 ```
 
 **❌ If checks fail:**
-- Follow the instructions in check-setup.md to fix the structure
+- Follow the check-setup skill to fix the structure
 - Create the required Dockerfile for backend projects
 - Ensure build scripts exist for frontend projects
 - Only proceed with deployment once all checks pass
@@ -285,6 +290,21 @@ Use `trigger_pipeline_run` with pipelineId.
 Use `get_run_status` to poll progress. **Poll every 15 seconds** (builds take 2-5 minutes).
 
 Report: stages, success URL, or failure details.
+
+### Post-Deployment Verification (Optional)
+
+After successful deployment, verify the application is running correctly:
+
+```bash
+# Check deployment health
+get_deployment_status(pipelineId)
+
+# Get pod logs for troubleshooting
+get_deployment_logs(pipelineId)
+
+# Verify env vars are set correctly (secrets masked)
+get_pod_env_vars(pipelineId)
+```
 
 ## Tip: Create Metadata for Faster Future Deployments
 

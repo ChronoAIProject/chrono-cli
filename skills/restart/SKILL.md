@@ -1,10 +1,17 @@
+---
+name: restart
+description: Perform Kubernetes rolling restart of backend deployment with existing image. Use when user needs to restart pods for config changes, reset state, clear memory leaks, or refresh without redeploying code. Does NOT rebuild or deploy new code - use deploy skill for that.
+---
+
 # Rolling Restart Backend Deployment
 
 Perform a Kubernetes rolling restart of the backend deployment. This restarts all pods with the existing image - useful for config changes or resetting pod state.
 
-**Note:** This does NOT rebuild or redeploy new code. For new code, use `/deploy`.
+**Note:** This does NOT rebuild or redeploy new code. For new code, use the deploy skill.
 
-## Step 1: Get Current Repo
+## Workflow
+
+### Step 1: Get Current Repo
 
 ```bash
 git config --get remote.origin.url
@@ -13,19 +20,19 @@ git branch --show-current
 
 Parse repo as owner/repo.
 
-## Step 2: Find Existing Pipeline
+### Step 2: Find Existing Pipeline
 
 Use `list_pipelines` to find the pipeline for this repo+branch.
 
-**If not found:** Tell user "No pipeline found. Use /deploy first to create one."
+**If not found:** Tell user "No pipeline found. Use the deploy skill first to create one."
 
-## Step 3: Trigger Rolling Restart
+### Step 3: Trigger Rolling Restart
 
 Use `restart_deployment` with the pipelineId.
 
 Tell user: "Rolling restart triggered. Waiting for pods to restart..."
 
-## Step 4: Poll Until Restart Complete (REQUIRED)
+### Step 4: Poll Until Complete (REQUIRED)
 
 **You MUST poll for status - do not skip this step.**
 
@@ -51,7 +58,7 @@ LOOP (max 24 iterations = 2 minutes):
 - `failed`: boolean - true if pod failure detected
 - `failureReason`: string - error details if failed
 
-## Step 5: Report Final Status
+### Step 5: Report Final Status
 
 **On success (ready=true):**
 ```
@@ -82,5 +89,20 @@ Check pod status manually or try again
 
 ## When NOT to Use
 
-- Deploying new code changes → use `/deploy` instead
-- First-time deployment → use `/deploy` instead
+- Deploying new code changes → use the deploy skill instead
+- First-time deployment → use the deploy skill instead
+
+## Troubleshooting
+
+If restart fails or pods have issues:
+
+```bash
+# Get logs from all pods
+get_deployment_logs(pipelineId)
+
+# Check env vars (secrets masked)
+get_pod_env_vars(pipelineId)
+
+# Get detailed pod status
+get_deployment_status(pipelineId)
+```
