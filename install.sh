@@ -37,16 +37,16 @@ curl -sSL -o chrono "$DOWNLOAD_URL"
 
 chmod +x chrono
 
-# Install to /usr/local/bin if possible, otherwise ~/go/bin
+# Install to /usr/local/bin if possible, otherwise ~/.local/bin
 if [ -w /usr/local/bin ]; then
     sudo mv chrono /usr/local/bin/
     echo "✓ Installed to /usr/local/bin/chrono"
 else
-    mkdir -p ~/go/bin
-    mv chrono ~/go/bin/
-    echo "✓ Installed to ~/go/bin/chrono"
-    echo "  Add ~/go/bin to your PATH if not already there:"
-    echo "  export PATH=\"\$PATH:~/go/bin\""
+    mkdir -p ~/.local/bin
+    mv chrono ~/.local/bin/
+    echo "✓ Installed to ~/.local/bin/chrono"
+    echo "  Add ~/.local/bin to your PATH if not already there:"
+    echo "  export PATH=\"\$PATH:~/.local/bin\""
 fi
 
 echo "Run 'chrono --help' to get started"
