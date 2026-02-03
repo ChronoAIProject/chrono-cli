@@ -37,12 +37,6 @@ chrono mcp-setup
 curl -sSL https://raw.githubusercontent.com/ChronoAIProject/chrono-cli/main/install.sh | sh
 ```
 
-### Via Go build
-
-```bash
-go build -o ~/.local/bin/chrono .
-```
-
 ### Verify Installation
 
 ```bash
