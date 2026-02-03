@@ -131,6 +131,7 @@ func installAllSkills(serverURL string) ([]string, error) {
 	// Skills to install from GitHub (folder names that contain SKILL.md)
 	skills := []string{
 		"chrono",
+		"chrono-storage",
 		"check-setup",
 		"deploy",
 		"restart",
