@@ -11,9 +11,9 @@ Deploy the current Git repository using developer-platform MCP.
 
 **IMPORTANT:** Before deploying, you MUST verify the project structure is correct.
 
-**First, follow the check-setup skill:**
+**First, follow the chrono-precheck skill:**
 
-1. Read the check-setup skill to understand the verification steps
+1. Read the chrono-precheck skill to understand the verification steps
 2. Check if `backend/Dockerfile` exists (for backend/fullstack projects)
 3. Verify frontend is a valid SPA (for frontend/fullstack projects)
 4. Ensure all required files are in place
@@ -29,7 +29,7 @@ grep -q '"build"' package.json 2>/dev/null && echo "✓ Root has build script" |
 ```
 
 **❌ If checks fail:**
-- Follow the check-setup skill to fix the structure
+- Follow the chrono-precheck skill to fix the structure
 - Create the required Dockerfile for backend projects
 - Ensure build scripts exist for frontend projects
 - Only proceed with deployment once all checks pass
@@ -266,6 +266,11 @@ Use `list_pipelines` to find existing pipeline for this repo+branch.
    - Redis → auto-injects `REDIS_URL`
    - PostgreSQL → auto-injects `DATABASE_URL`
 
+   **For object storage (file upload):**
+   - Ask: "Does your app need file upload functionality? (images, documents, etc.)"
+   - If yes, note: Object storage can be enabled after deployment using `configure_storage`
+   - Object storage → auto-injects `CHRONO_CDN_URL` (CDN base URL)
+
 6. `create_pipeline` with:
    - **name** and **appName**: Both use format {repo}-{branch-short}. Keep short and readable.
    - Detected settings from step 1
@@ -305,6 +310,46 @@ get_deployment_logs(pipelineId)
 # Verify env vars are set correctly (secrets masked)
 get_pod_env_vars(pipelineId)
 ```
+
+### Enable Object Storage (If Needed)
+
+**If your app requires file upload**, enable S3 object storage after deployment:
+
+Use the `configure_storage` MCP tool:
+
+```json
+{
+  "pipelineId": "<pipeline-id>",
+  "storageType": "object_storage",
+  "enabled": true
+}
+```
+
+**Success response:**
+```json
+{
+  "message": "S3 Object Storage successfully enabled for pipeline",
+  "pipelineId": "<pipeline-id>",
+  "appName": "<app-name>",
+  "storageType": "object_storage",
+  "enabled": true,
+  "status": "enabled"
+}
+```
+
+**Environment variable injected:**
+- `CHRONO_CDN_URL` = `https://cdn.chrono-ai.fun/{appName}`
+
+**To disable:**
+```json
+{
+  "pipelineId": "<pipeline-id>",
+  "storageType": "object_storage",
+  "enabled": false
+}
+```
+
+**Note:** See [chrono-storage](chrono-storage) skill for upload implementation examples.
 
 ## Tip: Create Metadata for Faster Future Deployments
 

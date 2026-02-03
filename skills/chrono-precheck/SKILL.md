@@ -77,6 +77,48 @@ grep -q '"build"' frontend/package.json && echo "✓ Frontend has build script" 
 ### All Projects:
 - [ ] `.chrono/config.yaml` exists (run `chrono init`)
 
+## Optional: Object Storage
+
+**If your app requires file upload** (images, documents, etc.), enable S3 object storage.
+
+### Enable Object Storage (via MCP)
+
+Use the `configure_storage` MCP tool:
+
+```json
+{
+  "pipelineId": "<your-pipeline-id>",
+  "storageType": "object_storage",
+  "enabled": true
+}
+```
+
+**Response when enabled:**
+```json
+{
+  "message": "S3 Object Storage successfully enabled for pipeline",
+  "pipelineId": "<pipeline-id>",
+  "appName": "<app-name>",
+  "storageType": "object_storage",
+  "enabled": true,
+  "status": "enabled"
+}
+```
+
+### Environment Variables Injected
+
+| Variable | Value | Purpose |
+|----------|-------|---------|
+| `CHRONO_CDN_URL` | `https://cdn.chrono-ai.fun/{appName}` | CDN base URL for accessing files |
+
+### Object Storage Checklist
+
+- [ ] File upload functionality needed
+- [ ] Use `configure_storage` MCP tool to enable object storage
+- [ ] App uses `CHRONO_CDN_URL` env var for CDN URLs
+
+**Note:** See [chrono-storage](chrono-storage) skill for upload implementation examples.
+
 ## Final Verification
 
 ```bash
