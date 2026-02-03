@@ -263,16 +263,18 @@ func installAllSkills(serverURL string) ([]string, error) {
 			downloadSource = "GitHub"
 		}
 
-		// Install to all locations - save as .md file for AI editors
+		// Install to all locations - save in subdirectory structure matching GitHub
 		success := true
 		for _, loc := range installLocations {
-			if err := os.MkdirAll(loc.Path, 0755); err != nil {
+			// Create skill subdirectory
+			skillDir := filepath.Join(loc.Path, skillName)
+			if err := os.MkdirAll(skillDir, 0755); err != nil {
 				fmt.Printf(" ✗ %s: %v\n", loc.Description, err)
 				success = false
 				continue
 			}
 
-			skillPath := filepath.Join(loc.Path, skillName+".md")
+			skillPath := filepath.Join(skillDir, "SKILL.md")
 			if err := os.WriteFile(skillPath, content, 0644); err != nil {
 				fmt.Printf(" ✗ %s: %v\n", loc.Description, err)
 				success = false
