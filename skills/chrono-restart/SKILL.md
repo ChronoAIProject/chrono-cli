@@ -1,6 +1,6 @@
 ---
-name: restart
-description: Perform Kubernetes rolling restart of backend deployment with existing image. Use when user needs to restart pods for config changes, reset state, clear memory leaks, or refresh without redeploying code. Does NOT rebuild or deploy new code - use deploy skill for that.
+name: chrono-restart
+description: Perform Kubernetes rolling restart of backend deployment with existing image. Use when user needs to restart pods for config changes, reset state, clear memory leaks, or refresh without redeploying code. Does NOT rebuild or deploy new code - use chrono-deploy skill for that.
 ---
 
 # Rolling Restart Backend Deployment

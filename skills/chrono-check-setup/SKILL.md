@@ -1,5 +1,5 @@
 ---
-name: check-setup
+name: chrono-check-setup
 description: Verify project structure meets platform requirements before deployment. Use when checking if a project is ready to deploy, verifying Dockerfile exists, ensuring health endpoints are implemented, or validating SPA frontend setup. Covers fullstack, backend-only, and frontend-only project types.
 ---
 

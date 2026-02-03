@@ -1,5 +1,5 @@
 ---
-name: deploy
+name: chrono-deploy
 description: Deploy current Git repository to the Developer Platform using MCP tools. Use when user asks to deploy, to deploy their project, or wants to push code to production. Covers pre-flight checks, GitHub OAuth, pipeline creation with environment variable detection, deployment triggering, and monitoring.
 ---
 
