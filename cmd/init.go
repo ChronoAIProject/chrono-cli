@@ -128,12 +128,12 @@ skills:
 }
 
 func installAllSkills(serverURL string) ([]string, error) {
-	// Skills to install from GitHub
+	// Skills to install from GitHub (folder names that contain SKILL.md)
 	skills := []string{
-		"chrono.md",
-		"check-setup.md",
-		"deploy.md",
-		"restart.md",
+		"chrono",
+		"check-setup",
+		"deploy",
+		"restart",
 	}
 
 	installed := make([]string, 0, len(skills))
@@ -209,8 +209,8 @@ func installAllSkills(serverURL string) ([]string, error) {
 		var content []byte
 		var downloadSource string
 
-		// Build raw GitHub URL
-		githubURL := fmt.Sprintf("https://raw.githubusercontent.com/%s/%s/skills/%s",
+		// Build raw GitHub URL - skills are now in subdirectories with SKILL.md
+		githubURL := fmt.Sprintf("https://raw.githubusercontent.com/%s/%s/skills/%s/SKILL.md",
 			githubRepo, githubRef, skillName)
 
 		fmt.Printf("  Downloading %s...", skillName)
@@ -224,14 +224,14 @@ func installAllSkills(serverURL string) ([]string, error) {
 			}
 
 			// Try local file (for chrono.md during development)
-			localSkillPath := filepath.Join(filepath.Dir(wD()), "skills", skillName)
+			localSkillPath := filepath.Join(filepath.Dir(wD()), "skills", skillName, "SKILL.md")
 			if localContent, err := os.ReadFile(localSkillPath); err == nil {
 				content = localContent
 				downloadSource = "local"
 				fmt.Print(" (local)...")
 			} else {
 				// Try from backend API
-				apiURL := serverURL + "/skills/" + strings.TrimSuffix(skillName, ".md")
+				apiURL := serverURL + "/skills/" + skillName
 				if apiResp, apiErr := http.Get(apiURL); apiErr == nil {
 					defer apiResp.Body.Close()
 					if apiResp.StatusCode == http.StatusOK {
@@ -263,7 +263,7 @@ func installAllSkills(serverURL string) ([]string, error) {
 			downloadSource = "GitHub"
 		}
 
-		// Install to all locations
+		// Install to all locations - save as .md file for AI editors
 		success := true
 		for _, loc := range installLocations {
 			if err := os.MkdirAll(loc.Path, 0755); err != nil {
@@ -272,7 +272,7 @@ func installAllSkills(serverURL string) ([]string, error) {
 				continue
 			}
 
-			skillPath := filepath.Join(loc.Path, skillName)
+			skillPath := filepath.Join(loc.Path, skillName+".md")
 			if err := os.WriteFile(skillPath, content, 0644); err != nil {
 				fmt.Printf(" ✗ %s: %v\n", loc.Description, err)
 				success = false
@@ -299,7 +299,7 @@ func updateInstalledSkills(configPath string, skills []string, serverURL string)
 	installedYAML := "installed:\n"
 	for _, skill := range skills {
 		installedYAML += fmt.Sprintf("  - name: %s\n", skill)
-		installedYAML += fmt.Sprintf("    url: %s/skills/%s\n", serverURL, skill)
+		installedYAML += fmt.Sprintf("    url: %s/skills/%s/SKILL.md\n", serverURL, skill)
 		installedYAML += fmt.Sprintf("    installed_at: \"%s\"\n", time.Now().Format(time.RFC3339))
 	}
 
