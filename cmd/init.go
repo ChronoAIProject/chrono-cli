@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ChronoAIProject/chrono-cli/pkg/config"
 	"github.com/spf13/cobra"
 )
 
@@ -60,10 +61,14 @@ func runInit(cmd *cobra.Command, args []string) error {
 	fmt.Println("========================================")
 	fmt.Println()
 
-	// Determine API URL: flag > env var > prompt
+	// Determine API URL: flag > env var > default
 	apiURL := initAPIURL
 	if apiURL == "" {
 		apiURL = os.Getenv("CHRONO_API_URL")
+	}
+	if apiURL == "" {
+		// Use default from config package
+		apiURL = config.Default().MCP.ServerURL
 	}
 
 	if apiURL == "" {
