@@ -1,5 +1,5 @@
 ---
-name: chrono
+name: chrono-setup
 description: Chrono CLI reference and setup guide. Use when installing chrono-cli, setting up a new project, running chrono init, or configuring MCP integration. Covers installation (curl script), authentication, project initialization, and common workflows.
 ---
 
