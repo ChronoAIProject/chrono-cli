@@ -366,7 +366,7 @@ func printCursorMCPConfig(serverURL, token string) {
 	fmt.Printf(`{
   "mcpServers": {
     "developer-platform": {
-      "url": "%s",
+      "url": "%s/mcp",
       "headers": {
         "Authorization": "Bearer %s"
       }
@@ -439,7 +439,7 @@ func mergeCursorConfig(configPath, serverURL, token string) error {
 
 	// Add or update the developer-platform server
 	config.MCPServers["developer-platform"] = map[string]interface{}{
-		"url": serverURL,
+		"url": serverURL + "/mcp",
 		"headers": map[string]string{
 			"Authorization": "Bearer " + token,
 		},
@@ -486,7 +486,7 @@ func mergeMCPConfig(configPath, serverURL, token string) error {
 
 	// Add or update the developer-platform server
 	config.MCPServers["developer-platform"] = map[string]interface{}{
-		"url": serverURL,
+		"url": serverURL + "/mcp",
 		"headers": map[string]string{
 			"Authorization": "Bearer " + token,
 		},
@@ -512,7 +512,7 @@ func printMCPConfigJSON(serverURL, token string) {
 	fmt.Printf(`{
   "mcpServers": {
     "developer-platform": {
-      "url": "%s",
+      "url": "%s/mcp",
       "headers": {
         "Authorization": "Bearer %s"
       }

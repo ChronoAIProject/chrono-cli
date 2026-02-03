@@ -14,9 +14,9 @@ const (
 	configDir      = ".chrono"
 	configFile     = "config.yaml"
 	skillsDir      = "skills"
-	// defaultBaseURL is only used if no config exists and CHRONO_API_URL is not set
-	// Users should configure via CHRONO_API_URL env var or config file
-	defaultBaseURL = "" // Require explicit configuration
+	// defaultBaseURL is the base API URL for API calls
+	// MCP configs will append /mcp when writing to editor config files
+	defaultBaseURL = "https://platform.aelf.dev/api/v1"
 )
 
 // Config represents the CLI configuration
