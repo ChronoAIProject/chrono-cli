@@ -33,9 +33,8 @@ async function registerUser(email, name, password) {
     email,
     name,
     passwordHash,
-    isActive: true,
     isVerified: false,
-    // lastLoginTime and lastActiveTime null until first login
+    // lastLoginTime null until first login
   });
 
   return user;
@@ -46,7 +45,7 @@ async function registerUser(email, name, password) {
 
 ```javascript
 async function loginUser(email, password) {
-  const user = await db.users.findOne({ email, isActive: true });
+  const user = await db.users.findOne({ email });
   if (!user) {
     throw new Error('Invalid credentials');
   }
@@ -56,15 +55,10 @@ async function loginUser(email, password) {
     throw new Error('Invalid credentials');
   }
 
-  // Update activity timestamps
+  // Update login timestamp
   await db.users.updateOne(
     { _id: user._id },
-    {
-      $set: {
-        lastLoginTime: new Date(),
-        lastActiveTime: new Date()
-      }
-    }
+    { $set: { lastLoginTime: new Date() } }
   );
 
   // Generate JWT token
@@ -119,25 +113,4 @@ function authenticate(req, res, next) {
   } catch (err) {
     res.status(401).json({ error: 'Invalid token' });
   }
-}
-
-// Also update lastActiveTime on authenticated requests
-function trackActivity(req, res, next) {
-  const originalSend = res.send;
-
-  res.send = function(...args) {
-    // After successful request, update activity
-    if (res.statusCode < 400 && req.user?.userId) {
-      db.users.updateOne(
-        {
-          _id: new mongoose.Types.ObjectId(req.user.userId),
-          lastActiveTime: { $lt: new Date(Date.now() - 5 * 60 * 1000) }
-        },
-        { $set: { lastActiveTime: new Date() } }
-      ).catch(() => {});  // Fire and forget
-    }
-    originalSend.apply(this, args);
-  };
-
-  next();
 }

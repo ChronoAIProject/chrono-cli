@@ -25,21 +25,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     select: false  // Exclude by default from queries
   },
-  // Activity tracking fields
+  // Activity tracking
   lastLoginTime: {
     type: Date,
     default: null
-  },
-  lastActiveTime: {
-    type: Date,
-    default: null,
-    index: true  // For querying inactive users
-  },
-  // Status fields
-  isActive: {
-    type: Boolean,
-    default: true,
-    index: true
   },
   isVerified: {
     type: Boolean,
@@ -60,7 +49,6 @@ const userSchema = new mongoose.Schema({
 
 // Indexes
 userSchema.index({ email: 1 }, { unique: true });
-userSchema.index({ isActive: 1, lastActiveTime: 1 });
 userSchema.index({ createdAt: -1 });
 
 module.exports = mongoose.model('User', userSchema);
@@ -75,8 +63,6 @@ module.exports = mongoose.model('User', userSchema);
 | `name` | String | Display name |
 | `passwordHash` | String | Bcrypt hash (select: false) |
 | `lastLoginTime` | Date | Last successful authentication |
-| `lastActiveTime` | Date | Last API request/activity |
-| `isActive` | Boolean | Account active status |
 | `isVerified` | Boolean | Email verification status |
 | `preferences` | Object | Embedded user settings |
 | `createdAt` | Date | Account creation timestamp |
@@ -91,8 +77,6 @@ interface IUser {
   name: string;
   passwordHash: string;
   lastLoginTime: Date | null;
-  lastActiveTime: Date | null;
-  isActive: boolean;
   isVerified: boolean;
   preferences: {
     notifications: {

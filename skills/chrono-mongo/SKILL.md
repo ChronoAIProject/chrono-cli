@@ -1,13 +1,13 @@
 ---
 name: chrono-mongo
-description: MongoDB design patterns for ChronoAI apps. Use when designing database schemas, implementing user authentication with login tracking, creating activity monitoring, or building analytics queries. Covers schema design, indexing strategies, connection pooling, and common patterns for user management.
+description: MongoDB design patterns for ChronoAI apps. Use when designing database schemas, implementing user authentication with login tracking, or building analytics queries. Covers schema design, indexing strategies, connection pooling, and common patterns for user management.
 ---
 
 # ChronoAI MongoDB Patterns
 
 ## Quick Start
 
-User schema with activity tracking:
+User schema with login tracking:
 
 ```javascript
 const userSchema = {
@@ -18,8 +18,6 @@ const userSchema = {
   createdAt: Date,
   updatedAt: Date,
   lastLoginTime: Date,    // Last successful login
-  lastActiveTime: Date,   // Last activity (API request)
-  isActive: Boolean,
   isVerified: Boolean,
 };
 ```
@@ -47,26 +45,14 @@ const conn = await mongoose.connect(process.env.MONGODB_URI, {
 ```javascript
 await db.users.updateOne(
   { _id: userId },
-  { $set: { lastLoginTime: new Date(), lastActiveTime: new Date() } }
-);
-```
-
-**On activity (optimistic - only if >5 min):**
-```javascript
-await db.users.updateOne(
-  { _id: userId, $or: [
-    { lastActiveTime: { $exists: false } },
-    { lastActiveTime: { $lt: new Date(Date.now() - 5 * 60 * 1000) } }
-  ]},
-  { $set: { lastActiveTime: new Date() } }
+  { $set: { lastLoginTime: new Date() } }
 );
 ```
 
 ## Index Strategy
 
 - Email lookup: `db.users.createIndex({ email: 1 }, { unique: true })`
-- Activity queries: `db.users.createIndex({ lastActiveTime: 1 })`
-- Compound: `db.users.createIndex({ isActive: 1, lastActiveTime: 1 })`
+- Login queries: `db.users.createIndex({ lastLoginTime: 1 })`
 
 ## Schema Design Principles
 
@@ -78,6 +64,5 @@ await db.users.updateOne(
 
 - **User Schema:** [user-schema.md](references/user-schema.md)
 - **Authentication:** [authentication.md](references/authentication.md)
-- **Activity Tracking:** [activity-tracking.md](references/activity-tracking.md)
 - **Common Queries:** [queries.md](references/queries.md)
 - **Index Strategies:** [index-strategies.md](references/index-strategies.md)
